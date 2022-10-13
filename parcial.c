@@ -32,6 +32,7 @@ proces *procesos[CANTIDAD_DE_PROCESOS];
 
 int main(){
 
+
 iniciarScheduler();
 recorreCola();
 mostrarEnPantalla();
