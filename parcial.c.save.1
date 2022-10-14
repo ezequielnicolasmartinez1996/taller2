@@ -64,11 +64,6 @@ terminarProceso();
 ingresarProceso();
 recorreCola();
 mostrarEnPantalla();
-terminarProceso();
-ingresarProceso();
-mostrarEnPantalla();
-recorreCola();
-mostrarEnPantalla();
 
 return 0;
 }
@@ -97,7 +92,6 @@ int procesadoresColapsados = 0;
     for(int i=0; i<CANTIDAD_DE_PROCESOS; i++){
         if(strcmp(procesos[i]->estado, corriendo) == 0){
         strcpy(procesos[i]->estado, terminado);
-         procesos[i]->prioridad++;
         }
         for(int k=0; k<CANTIDAD_DE_PROCESOS; k++){
                 if(strcmp(procesos[k]->estado, corriendo) == 0){
@@ -106,13 +100,10 @@ int procesadoresColapsados = 0;
         }
         if(strcmp(procesos[i]->estado, listo) == 0 && procesadoresColapsados<2){
         strcpy(procesos[i]->estado, corriendo);
-         procesos[i]->prioridad++;
         }
 procesadoresColapsados=0;
-
         if(strcmp(procesos[i]->estado, nuevo) == 0){
         strcpy(procesos[i]->estado, listo);
-        procesos[i]->prioridad++;
         }
      }
 }
@@ -120,16 +111,9 @@ procesadoresColapsados=0;
 void terminarProceso(){
     for(int i=0; i<CANTIDAD_DE_PROCESOS; i++){
         if(strcmp(procesos[i]->estado, terminado) == 0){
+             	 }
+        	 }
         strcpy(procesos[i]->estado, vacio);
-        if(procesos[i]->procesador=1){
-        procesador1--;
-        }
-        if(procesos[i]->procesador=2){
-        procesador2--;
-        }
-        procesos[i]->procesador=0;
-        procesos[i]->prioridad=0;
-        procesos[i]->id_proceso=0;
         }
     }
 }
@@ -141,18 +125,10 @@ prioridad=0;
      for(int i=0; i<CANTIDAD_DE_PROCESOS; i++){
         if(strcmp(procesos[i]->estado, vacio) == 0 && bandera == 0){
         procesos[i]->id_proceso = rand()%9999;
-	    procesos[i]->prioridad=0;
+        procesos[i]->prioridad=0;
+        
         strcpy(procesos[i]->estado, nuevo);
         bandera=1;
-        }
-        if(strcmp(procesos[i]->estado, nuevo) ==0 && bandera == 1){
-        	if(procesador1<procesador2){
-        	procesos[i]->procesador=1;
-        	procesador1++;
-        	}	else{
-        	procesos[i]->procesador=2;
-        	procesador2++;
-        		}
         }
     }
 }
