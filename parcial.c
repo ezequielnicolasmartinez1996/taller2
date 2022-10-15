@@ -9,7 +9,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <time.h>
-#define CANTIDAD_DE_PROCESOS 10
+#define CANTIDAD_DE_PROCESOS 7
 
 static int id;
 char nuevo[] = "Nuevo";
@@ -67,6 +67,21 @@ int main()
     ingresarProceso();
     mostrarEnPantalla();
     recorreCola();
+    mostrarEnPantalla();
+    ingresarProceso();
+    ingresarProceso();
+    terminarProceso();
+    mostrarEnPantalla();
+    recorreCola();
+    terminarProceso();
+    mostrarEnPantalla();
+    recorreCola();
+    terminarProceso();
+    mostrarEnPantalla();
+    recorreCola();
+    terminarProceso();
+    mostrarEnPantalla();
+    terminarProceso();
     mostrarEnPantalla();
 
     return 0;
