@@ -9,7 +9,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <time.h>
-#define CANTIDAD_DE_PROCESOS 7
+#define CANTIDAD_DE_PROCESOS 10
 
 static int id;
 char nuevo[] = "Nuevo";
