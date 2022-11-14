@@ -20,44 +20,72 @@ typedef struct nodoLegislador
     struct nodoLegislador *siguiente;
 } nodoLegislador;
 
+
+nodoLegislador *inicLista(nodoLegislador *lista);
+nodoLegislador *ingresarDatos(nodoLegislador *lista);
+nodoLegislador *crearLegislador(legislador p);
+nodoLegislador *agregarAlPrincipio(nodoLegislador *lista, nodoLegislador *nuevo);
+void mostrar();
+legislador retornarLegislador();
+
 int main()
 {
-    nodoLegislador *inicioLista = NULL;
-    nodoLegislador *primerLegislador = (nodoLegislador *)malloc(sizeof(nodoLegislador));
+    nodoLegislador *lista = inicLista(lista);
+    lista = ingresarDatos(lista);
+    mostrar(lista);
 
-    strcpy(primerLegislador->p.nombre, "J.D.Peron");
-    strcpy(primerLegislador->p.presencia, "Presente");
-    strcpy(primerLegislador->p.grupo, "ChicosMalos");
-    strcpy(primerLegislador->p.votacion, "Afirmativo");
-    primerLegislador->siguiente = NULL;
+    return 0;
+}
 
-    inicioLista = primerLegislador;
+nodoLegislador *inicLista(nodoLegislador *lista)
+{
+    return lista = NULL;
+}
 
-    primerLegislador = (nodoLegislador *)malloc(sizeof(nodoLegislador));
+nodoLegislador *crearLegislador(legislador p)
+{
+    nodoLegislador *legisladorActual = (nodoLegislador *)malloc(sizeof(nodoLegislador));
+    strcpy(legisladorActual->p.nombre, p.nombre);
+    strcpy(legisladorActual->p.presencia, p.presencia);
+    strcpy(legisladorActual->p.grupo, p.grupo);
+    strcpy(legisladorActual->p.votacion, p.votacion);
+    legisladorActual->siguiente = NULL;
+    return legisladorActual;
+}
+legislador retornarLegislador()
+{
+    legislador p;
+    printf("Ingrese nombre: \n");
+    scanf("%s", p.nombre);
 
-    strcpy(primerLegislador->p.nombre, "E.M.Peron");
-    strcpy(primerLegislador->p.presencia, "Presente");
-    strcpy(primerLegislador->p.grupo, "ChicosBuenos");
-    strcpy(primerLegislador->p.votacion, "Negativo");
-    primerLegislador->siguiente = NULL;
+    printf("Ingrese voto: \n");
+    scanf("%s", p.votacion);
 
-    primerLegislador->siguiente = inicioLista;
-    inicioLista = primerLegislador;
+    printf("Ingrese presencia: \n");
+    scanf("%s", p.presencia);
 
-    primerLegislador = (nodoLegislador *)malloc(sizeof(nodoLegislador));
+    printf("Ingrese grupo: \n");
+    scanf("%s", p.grupo);
+    return p;
+}
 
-    strcpy(primerLegislador->p.nombre, "C.F.K");
-    strcpy(primerLegislador->p.presencia, "Presente");
-    strcpy(primerLegislador->p.grupo, "ChicosMalos");
-    strcpy(primerLegislador->p.votacion, "Afirmativo");
-    primerLegislador->siguiente = NULL;
+nodoLegislador *agregarAlPrincipio(nodoLegislador *lista, nodoLegislador *nuevo)
+{
+    if (lista == NULL)
+    {
+        lista = nuevo;
+    }
+    else
+    {
+        nuevo->siguiente = lista;
+        lista = nuevo;
+    }
+    return lista;
+}
 
-    primerLegislador->siguiente = inicioLista;
-    inicioLista = primerLegislador;
-    /************************************************************************/
-
-    nodoLegislador *seguidor = inicioLista;
-
+void mostrar(nodoLegislador *lista)
+{
+    nodoLegislador *seguidor = lista;
     while (seguidor != NULL)
     {
         printf("Nombre: %s\n", seguidor->p.nombre);
@@ -66,6 +94,20 @@ int main()
         printf("Voto: %s\n", seguidor->p.votacion);
         seguidor = seguidor->siguiente;
     }
-    /************************************************************************/
-    return 0;
+}
+
+nodoLegislador *ingresarDatos(nodoLegislador *lista)
+{
+    nodoLegislador *nuevo;
+    legislador p;
+    int cont = 100;
+    while (cont == 100)
+    {
+        p = retornarLegislador(p);
+        nuevo = crearLegislador(p);
+        lista = agregarAlPrincipio(lista, nuevo);
+        printf("Desea continuar? Ingrese 100");
+        scanf("%d", &cont);
+    }
+    return lista;
 }
