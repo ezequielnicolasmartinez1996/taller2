@@ -51,7 +51,7 @@ void crearLegisladores(){
 
         "Nubia",
 
-        "Gustavo Adolfo",
+        "Gustavo",
 
         "Julio",
 
