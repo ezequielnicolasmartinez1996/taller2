@@ -20,7 +20,6 @@ typedef struct nodoLegislador
     struct nodoLegislador *siguiente;
 } nodoLegislador;
 
-
 nodoLegislador *inicLista(nodoLegislador *lista);
 nodoLegislador *ingresarDatos(nodoLegislador *lista);
 nodoLegislador *crearLegislador(legislador p);
@@ -43,6 +42,7 @@ nodoLegislador *inicLista(nodoLegislador *lista)
 }
 
 nodoLegislador *crearLegislador(legislador p)
+
 {
     nodoLegislador *legisladorActual = (nodoLegislador *)malloc(sizeof(nodoLegislador));
     strcpy(legisladorActual->p.nombre, p.nombre);
@@ -52,6 +52,7 @@ nodoLegislador *crearLegislador(legislador p)
     legisladorActual->siguiente = NULL;
     return legisladorActual;
 }
+
 legislador retornarLegislador()
 {
     legislador p;
