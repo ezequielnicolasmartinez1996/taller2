@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#define CANT_LEGISLADORES 4
+#define CANT_LEGISLADORES 5
 
 typedef struct legis
 {
@@ -28,96 +28,30 @@ typedef struct chicos_buenos
 } chicos_buenos;
 
 legis *legisladores[CANT_LEGISLADORES];
+legis *legisladorActual;
+
+chicos_malos *chicos_Malos;
+chicos_buenos *chicos_Buenos;
+chicos_malos *nuevos_Malos;
+chicos_buenos *nuevos_Buenos;
+chicos_malos *siguemalos;
+chicos_buenos *siguebuenos;
 
 void crearLegisladores(); // CREA LOS LEGISLADORES -ok
-// insertaAntes();           // INSERTA LOS LEGISLADORES EN LOS GRUPOS ANTES DEL VOTO (SEGUN CARGA DEL USUARIO)
+void insertaAntes();      // INSERTA LOS LEGISLADORES EN LOS GRUPOS ANTES DEL VOTO (SEGUN CARGA DEL USUARIO)
+void mostrar();           // MUESTRA LAS LISTAS ENLAZADAS
+void pideVotoYpres();     // PIDE AL USUARIO EL VOTO Y PRESENCIA DE LOS LEGISLADORES
 // inserta();                // INSERTA LOS LEGISLADORES DESPUES DEL VOTO
 // suprime();                // ELIMINA LOS LEGISLADORES DE LOS GRUPOS DESPUES DEL VOTO
 // miembro();                // DEVUELVE BOOLEANO SEGUN PRESENCIA
-// mostrar();                // MUESTRA LAS LISTAS ENLAZADAS
 
 int main()
 {
     crearLegisladores();
-    chicos_malos *chicos_Malos = malloc(sizeof(chicos_malos));
-    chicos_buenos *chicos_Buenos = malloc(sizeof(chicos_buenos));
-    chicos_malos *nuevos_Malos = malloc(sizeof(chicos_malos));
-    chicos_buenos *nuevos_Buenos = malloc(sizeof(chicos_buenos));
-
-    // ubicar a los legisladores en sus grupos antes de la votacion (InsertaAntes)
-    nuevos_Malos->siguiente = NULL;  // EL primero apunta a NULL
-    nuevos_Buenos->siguiente = NULL; // El primero apunta a NULL
-
-    /**************** LEGISLADOR 1**************/
-    if (strcmp("M", legisladores[0]->grupo) == 0)
-    {
-        nuevos_Malos = malloc(sizeof(chicos_malos));
-
-        printf("El legislador %s pertenece al grupo Chicos Malos\n", legisladores[0]->nombre);
-        strcpy(nuevos_Malos->legisladores.nombre, legisladores[0]->nombre);
-        strcpy(nuevos_Malos->legisladores.grupo, legisladores[0]->grupo);
-        nuevos_Malos->siguiente = NULL;
-        chicos_Malos = nuevos_Malos;
-    }
-
-    /**************** LEGISLADOR 2**************/
-    if (strcmp("M", legisladores[1]->grupo) == 0)
-    {
-        nuevos_Malos = malloc(sizeof(chicos_malos));
-
-        printf("El legislador %s pertenece al grupo Chicos Malos\n", legisladores[1]->nombre);
-        strcpy(nuevos_Malos->legisladores.nombre, legisladores[1]->nombre);
-        strcpy(nuevos_Malos->legisladores.grupo, legisladores[1]->grupo);
-        nuevos_Malos->siguiente = chicos_Malos;
-        chicos_Malos = nuevos_Malos;
-    }
-
-    /**************** LEGISLADOR 3**************/
-    if (strcmp("M", legisladores[2]->grupo) == 0)
-    {
-        nuevos_Malos = malloc(sizeof(chicos_malos));
-
-        printf("El legislador %s pertenece al grupo Chicos Malos\n", legisladores[2]->nombre);
-        strcpy(nuevos_Malos->legisladores.nombre, legisladores[2]->nombre);
-        strcpy(nuevos_Malos->legisladores.grupo, legisladores[2]->grupo);
-        nuevos_Malos->siguiente = chicos_Malos;
-        chicos_Malos = nuevos_Malos;
-    }
-
-        /**************** LEGISLADOR 4**************/
-    if (strcmp("M", legisladores[3]->grupo) == 0)
-    {
-        nuevos_Malos = malloc(sizeof(chicos_malos));
-
-        printf("El legislador %s pertenece al grupo Chicos Malos\n", legisladores[3]->nombre);
-        strcpy(nuevos_Malos->legisladores.nombre, legisladores[3]->nombre);
-        strcpy(nuevos_Malos->legisladores.grupo, legisladores[3]->grupo);
-        nuevos_Malos->siguiente = chicos_Malos;
-        chicos_Malos = nuevos_Malos;
-    }
-
-    chicos_malos *siguemalos = malloc(sizeof(chicos_malos));
-    siguemalos = chicos_Malos;
-    while (siguemalos != NULL)
-    {
-        printf("Nombre: %s\n", siguemalos->legisladores.nombre);
-        printf("Presente: %s\n", siguemalos->legisladores.presencia);
-        printf("Grupo: %s\n", siguemalos->legisladores.grupo);
-        printf("Voto: %s\n", siguemalos->legisladores.voto);
-        siguemalos = siguemalos->siguiente;
-    }
+    insertaAntes();
+    mostrar();
+    pideVotoYpres();
 }
-/*
-if (strcmp("B", legisladores[i]->grupo) == 0)
-{
-    nuevos_Buenos = malloc(sizeof(chicos_buenos));
-    printf("El legislador %s pertenece al grupo Chicos Buenos\n", legisladores[i]->nombre);
-    strcpy(nuevos_Buenos->legisladores.nombre, legisladores[i]->nombre);
-    nuevos_Buenos->siguiente = NULL; // El primero apunta a NULL
-}
-*/
-
-// recorrer chicos_malos
 
 void crearLegisladores()
 {
@@ -182,20 +116,222 @@ void crearLegisladores()
 
         legisladores[i] = legisladorActual;
     }
-
-    printf("Los datos ingresados para cada legislador son:\n");
+}
+void insertaAntes()
+{
+    chicos_Malos = malloc(sizeof(chicos_malos));
+    chicos_Buenos = malloc(sizeof(chicos_buenos));
+    nuevos_Malos = malloc(sizeof(chicos_malos));
+    nuevos_Buenos = malloc(sizeof(chicos_buenos));
+    // ubicar a los legisladores en sus grupos antes de la votacion (InsertaAntes)
+    nuevos_Malos->siguiente = NULL;  // EL primero apunta a NULL
+    nuevos_Buenos->siguiente = NULL; // El primero apunta a NULL
+    chicos_Malos = NULL;
+    chicos_Buenos = NULL;
 
     for (int i = 0; i < CANT_LEGISLADORES; i++)
     {
-        // printf("El nombre del legislador %s:, %s\n", nombres[i], legisladores[i]->nombre);
+        if (strcmp("M", legisladores[i]->grupo) == 0)
+        {
+            nuevos_Malos = malloc(sizeof(chicos_malos));
 
-        printf("El grupo del legislador %s:, %s\n", nombres[i], legisladores[i]->grupo);
+            // printf("El legislador %s pertenece al grupo Chicos Malos\n", legisladores[i]->nombre);
+            strcpy(nuevos_Malos->legisladores.nombre, legisladores[i]->nombre);
+            strcpy(nuevos_Malos->legisladores.grupo, legisladores[i]->grupo);
+            if (nuevos_Malos->siguiente = NULL)
+            {
+                nuevos_Malos->siguiente = NULL;
+                chicos_Malos = nuevos_Malos;
+            }
+            else
+            {
+                nuevos_Malos->siguiente = chicos_Malos;
+                chicos_Malos = nuevos_Malos;
+            }
+        }
 
-        // printf("El presentismo del legislador %s:, %s\n", nombres[i], legisladores[i]->presencia);
+        if (strcmp("B", legisladores[i]->grupo) == 0)
+        {
+            nuevos_Buenos = malloc(sizeof(chicos_buenos));
+
+            // printf("El legislador %s pertenece al grupo Chicos Buenos\n", legisladores[i]->nombre);
+            strcpy(nuevos_Buenos->legisladores.nombre, legisladores[i]->nombre);
+            strcpy(nuevos_Buenos->legisladores.grupo, legisladores[i]->grupo);
+            if (nuevos_Buenos->siguiente = NULL)
+            {
+                nuevos_Buenos->siguiente = NULL;
+                chicos_Buenos = nuevos_Buenos;
+            }
+            else
+            {
+                nuevos_Buenos->siguiente = chicos_Buenos;
+                chicos_Buenos = nuevos_Buenos;
+            }
+        }
+    }
+}
+void mostrar()
+{
+    chicos_malos *siguemalos = malloc(sizeof(chicos_malos));
+    siguemalos = chicos_Malos;
+    while (siguemalos != NULL)
+    {
+        printf("Nombre: %s\n", siguemalos->legisladores.nombre);
+        printf("Presente: %s\n", siguemalos->legisladores.presencia);
+        if (strcmp("M", siguemalos->legisladores.grupo) == 0)
+        {
+            printf("Grupo: chicos_malos\n");
+        }
+        printf("Voto: %s\n", siguemalos->legisladores.voto);
+        siguemalos = siguemalos->siguiente;
+    }
+
+    chicos_buenos *siguebuenos = malloc(sizeof(chicos_buenos));
+    siguebuenos = chicos_Buenos;
+    while (siguebuenos != NULL)
+    {
+        printf("Nombre: %s\n", siguebuenos->legisladores.nombre);
+        printf("Presente: %s\n", siguebuenos->legisladores.presencia);
+        if (strcmp("B", siguebuenos->legisladores.grupo) == 0)
+        {
+            printf("Grupo: chicos_buenos\n");
+        }
+
+        printf("Voto: %s\n", siguebuenos->legisladores.voto);
+        siguebuenos = siguebuenos->siguiente;
     }
 }
 
+void pideVotoYpres()
+{
+    chicos_malos *siguemalos = malloc(sizeof(chicos_malos));
+    siguemalos = chicos_Malos;
+    int valvoto = 0;
+    int valpresencia = 0;
+
+    /**************INGRESAR VOTO Y PRESENCIA A CADA LEGISLADOR***************/
+    while (siguemalos != NULL)
+    {
+        printf("Inserta el VOTO del legislador %s (D O F // DESFAVORABLE O FAVORABLE) \n", siguemalos->legisladores.nombre);
+        scanf("%s", siguemalos->legisladores.voto);
+        while (valvoto != 1) // CHECK DE INFORMACION INTRODUCIDA
+        {
+            if (strcmp(siguemalos->legisladores.voto, "D") == 0 || strcmp(siguemalos->legisladores.voto, "F") == 0)
+            {
+                valvoto = 1;
+            }
+            else
+            {
+                printf("Ingrese nuevamente el comando\n");
+                scanf("%s", siguemalos->legisladores.voto);
+            }
+        }
+    }
+    /*  if (strcmp(chicos_Malos->legisladores.grupo, "M") == 0)
+      {
+          strcpy(chicos_Malos->legisladores.voto, legisladorActual->voto);
+      }
+
+    printf("Inserta el PRESENTISMO del legislador %s (P o A //PRESENTE O AUSENTE) \n", siguemalos->legisladores.nombre);
+    scanf("%s", legisladorActual->presencia);
+
+    while (valpresencia != 1) // CHECK DE INFORMACION INTRODUCIDA
+    {
+        if (strcmp(legisladorActual->presencia, "P") == 0 || strcmp(legisladorActual->presencia, "A") == 0)
+        {
+            valpresencia = 1;
+        }
+        else
+        {
+            (strcmp(legisladorActual->presencia, "P") != 0 || strcmp(legisladorActual->presencia, "A") != 0);
+            printf("Ingrese nuevamente el comando\n");
+            scanf("%s", legisladorActual->presencia);
+        }
+*/
+    /*******************************ASIGNAR Y MOSTRAR DATOS COMPLETOS DE CADA LEGISLADOR**********************************/
+    siguemalos = malloc(sizeof(chicos_malos));
+    siguemalos = chicos_Malos;
+    while (siguemalos != NULL)
+    {
+        printf("Nombre: %s\n", siguemalos->legisladores.nombre);
+        printf("Presente: %s\n", siguemalos->legisladores.presencia);
+        if (strcmp("M", siguemalos->legisladores.grupo) == 0)
+        {
+            printf("Grupo: chicos_malos\n");
+        }
+        printf("Voto: %s\n", siguemalos->legisladores.voto);
+        siguemalos = siguemalos->siguiente;
+    }
+
+    siguebuenos = malloc(sizeof(chicos_buenos));
+    siguebuenos = chicos_Buenos;
+    while (siguebuenos != NULL)
+    {
+        printf("Nombre: %s\n", siguebuenos->legisladores.nombre);
+        printf("Presente: %s\n", siguebuenos->legisladores.presencia);
+        if (strcmp("B", siguebuenos->legisladores.grupo) == 0)
+        {
+            printf("Grupo: chicos_buenos\n");
+        }
+
+        printf("Voto: %s\n", siguebuenos->legisladores.voto);
+        siguebuenos = siguebuenos->siguiente;
+    }
+}
+
+
+/*
+/**************** LEGISLADOR 1**************
+if (strcmp("M", legisladores[0]->grupo) == 0)
+{
+    nuevos_Malos = malloc(sizeof(chicos_malos));
+
+    printf("El legislador %s pertenece al grupo Chicos Malos\n", legisladores[0]->nombre);
+    strcpy(nuevos_Malos->legisladores.nombre, legisladores[0]->nombre);
+    strcpy(nuevos_Malos->legisladores.grupo, legisladores[0]->grupo);
+    nuevos_Malos->siguiente = NULL;
+    chicos_Malos = nuevos_Malos;
+}
+
+/**************** LEGISLADOR 2**************
+if (strcmp("M", legisladores[1]->grupo) == 0)
+{
+    nuevos_Malos = malloc(sizeof(chicos_malos));
+
+    printf("El legislador %s pertenece al grupo Chicos Malos\n", legisladores[1]->nombre);
+    strcpy(nuevos_Malos->legisladores.nombre, legisladores[1]->nombre);
+    strcpy(nuevos_Malos->legisladores.grupo, legisladores[1]->grupo);
+    nuevos_Malos->siguiente = chicos_Malos;
+    chicos_Malos = nuevos_Malos;
+}
+
+/**************** LEGISLADOR 3**************
+if (strcmp("M", legisladores[2]->grupo) == 0)
+{
+    nuevos_Malos = malloc(sizeof(chicos_malos));
+
+    printf("El legislador %s pertenece al grupo Chicos Malos\n", legisladores[2]->nombre);
+    strcpy(nuevos_Malos->legisladores.nombre, legisladores[2]->nombre);
+    strcpy(nuevos_Malos->legisladores.grupo, legisladores[2]->grupo);
+    nuevos_Malos->siguiente = chicos_Malos;
+    chicos_Malos = nuevos_Malos;
+}
+
+/**************** LEGISLADOR 4**************
+if (strcmp("M", legisladores[3]->grupo) == 0)
+{
+    nuevos_Malos = malloc(sizeof(chicos_malos));
+
+    printf("El legislador %s pertenece al grupo Chicos Malos\n", legisladores[3]->nombre);
+    strcpy(nuevos_Malos->legisladores.nombre, legisladores[3]->nombre);
+    strcpy(nuevos_Malos->legisladores.grupo, legisladores[3]->grupo);
+    nuevos_Malos->siguiente = chicos_Malos;
+    chicos_Malos = nuevos_Malos;
+}
+*/
+
 /*VOTACION()
+
 {
     legis *legisladorActual = malloc(sizeof(legis));
     for (int i = 0; i < CANT_LEGISLADORES; i++)
@@ -255,3 +391,12 @@ miembro()
 mostrar()
 {
 } */
+/*
+if (strcmp("B", legisladores[i]->grupo) == 0)
+{
+nuevos_Buenos = malloc(sizeof(chicos_buenos));
+printf("El legislador %s pertenece al grupo Chicos Buenos\n", legisladores[i]->nombre);
+strcpy(nuevos_Buenos->legisladores.nombre, legisladores[i]->nombre);
+nuevos_Buenos->siguiente = NULL; // El primero apunta a NULL
+}
+*/
