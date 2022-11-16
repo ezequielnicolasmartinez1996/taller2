@@ -40,17 +40,18 @@ chicos_malos *auxmalos;
 chicos_buenos *auxbuenos;
 
 void crearLegisladores(); // CREA LOS LEGISLADORES -ok
-void insertaAntes();      // INSERTA LOS LEGISLADORES EN LOS GRUPOS ANTES DEL VOTO (SEGUN CARGA DEL USUARIO)
-void mostrar();           // MUESTRA LAS LISTAS ENLAZADAS
-void votacion();          // SE HACE LA VOTACION: SE PREGUNTA PRESENCIA Y SU VOTO
-void insertar();
-void suprimir();
+void insertaAntes();      // INSERTA LOS LEGISLADORES EN LOS GRUPOS ANTES DEL VOTO (SEGUN CARGA DEL USUARIO) -ok
+void mostrar();           // MUESTRA LAS LISTAS ENLAZADAS -ok
+void votacion();          // SE HACE LA VOTACION: SE PREGUNTA PRESENCIA Y SU VOTO -ok
+void reordenar();         // REORDENA LOS LEGISLADORES EN SUS GRUPOS SEGUN SU VOTO (REEMPLAZA AL SUPRIMIR / INSERTAR) - FALTA
+
 int main()
 {
     crearLegisladores();
     insertaAntes();
     mostrar();
     votacion();
+    reordenar();
     mostrar();
 }
 
@@ -135,8 +136,6 @@ void insertaAntes()
         if (strcmp("M", legisladores[i]->grupo) == 0)
         {
             nuevos_Malos = malloc(sizeof(chicos_malos));
-
-            // printf("El legislador %s pertenece al grupo Chicos Malos\n", legisladores[i]->nombre);
             strcpy(nuevos_Malos->legisladores.nombre, legisladores[i]->nombre);
             strcpy(nuevos_Malos->legisladores.grupo, legisladores[i]->grupo);
             if (nuevos_Malos->siguiente = NULL)
@@ -154,8 +153,6 @@ void insertaAntes()
         if (strcmp("B", legisladores[i]->grupo) == 0)
         {
             nuevos_Buenos = malloc(sizeof(chicos_buenos));
-
-            // printf("El legislador %s pertenece al grupo Chicos Buenos\n", legisladores[i]->nombre);
             strcpy(nuevos_Buenos->legisladores.nombre, legisladores[i]->nombre);
             strcpy(nuevos_Buenos->legisladores.grupo, legisladores[i]->grupo);
             if (nuevos_Buenos->siguiente = NULL)
@@ -207,14 +204,12 @@ void votacion()
     auxmalos = chicos_Malos;
     int validar_presencia = 0;
     int validar_voto = 0;
-    while (auxmalos != NULL)
+    while (auxmalos != NULL) // WHILE GENERAL
     {
-        validar_presencia = 0;
         printf("Ingrese presencia del legislador %s: (P O A, PRESENTE O AUSENTE)\n", auxmalos->legisladores.nombre);
         scanf("%s", auxmalos->legisladores.presencia);
-
-        strcpy(chicos_Malos->legisladores.presencia, auxmalos->legisladores.presencia); // PRESENCIAMALOS
-        while (validar_presencia != 1)
+        validar_presencia = 0;
+        while (validar_presencia != 1) // WHILE PRESENCIA
         {
             if (strcmp(auxmalos->legisladores.presencia, "P") == 0 | strcmp(auxmalos->legisladores.presencia, "A") == 0)
             {
@@ -224,29 +219,30 @@ void votacion()
             {
                 printf("Ingrese correctamente el comando");
                 scanf("%s", auxmalos->legisladores.presencia);
-                strcpy(chicos_Malos->legisladores.presencia, auxmalos->legisladores.presencia);
             }
         }
 
-        validar_voto = 0;
-        if (strcmp(chicos_Malos->legisladores.presencia, "P") == 0) // VOTO MALOS
+        if (strcmp(auxmalos->legisladores.presencia, "P") == 0) // VOTO MALOS
         {
             printf("Ingrese el voto del legislador %s: (F O D FAVORABLE/DESFAVORABLE)\n", auxmalos->legisladores.nombre);
             scanf("%s", auxmalos->legisladores.voto);
-            if (strcmp(auxmalos->legisladores.voto, "F") == 0 | strcmp(auxmalos->legisladores.voto, "D") == 0)
+            validar_voto = 0;
+            while (validar_voto != 1) // WHILE VOTO
             {
-                validar_voto = 1;
-            }
-            else
-            {
-                printf("Ingrese correctamente el comando");
-                scanf("%s", auxmalos->legisladores.voto);
-                strcpy(chicos_Malos->legisladores.voto, auxmalos->legisladores.voto);
+                if (strcmp(auxmalos->legisladores.voto, "F") == 0 | strcmp(auxmalos->legisladores.voto, "D") == 0)
+                {
+                    validar_voto = 1;
+                }
+                else
+                {
+                    printf("Ingrese correctamente el comando");
+                    scanf("%s", auxmalos->legisladores.voto);
+                }
             }
         }
-
+        if (strcmp(auxmalos->legisladores.presencia, "A") == 0)
         {
-            strcpy(chicos_Malos->legisladores.voto, "Ausente");
+            strcpy(auxmalos->legisladores.voto, "Ausente");
         }
         auxmalos = auxmalos->siguiente;
     }
@@ -254,16 +250,15 @@ void votacion()
     auxbuenos = malloc(sizeof(chicos_buenos));
     auxbuenos = chicos_Buenos;
     validar_presencia = 0;
-    while (auxbuenos != NULL)
+    validar_voto = 0;
+    while (auxbuenos != NULL) // WHILE GENERAL
     {
-        validar_presencia = 0;
         printf("Ingrese presencia del legislador %s: (P O A, PRESENTE O AUSENTE)\n", auxbuenos->legisladores.nombre);
         scanf("%s", auxbuenos->legisladores.presencia);
-
-        strcpy(chicos_Buenos->legisladores.presencia, auxbuenos->legisladores.presencia);
-        while (validar_presencia != 1)
+        validar_presencia = 0;
+        while (validar_presencia != 1) // WHILE PRESENCIA
         {
-            if (strcmp(auxbuenos->legisladores.presencia, "P") == 0 | strcmp(auxbuenos->legisladores.presencia, "A") == 0) // PRESENCIABUENO
+            if (strcmp(auxbuenos->legisladores.presencia, "P") == 0 | strcmp(auxbuenos->legisladores.presencia, "A") == 0)
             {
                 validar_presencia = 1;
             }
@@ -271,14 +266,16 @@ void votacion()
             {
                 printf("Ingrese correctamente el comando");
                 scanf("%s", auxbuenos->legisladores.presencia);
-                strcpy(chicos_Buenos->legisladores.presencia, auxbuenos->legisladores.presencia);
             }
+        }
 
-            validar_voto = 0; // VOTOBUENO
-            if (strcmp(chicos_Buenos->legisladores.presencia, "P") == 0)
+        if (strcmp(auxbuenos->legisladores.presencia, "P") == 0) // VOTO MALOS
+        {
+            printf("Ingrese el voto del legislador %s: (F O D FAVORABLE/DESFAVORABLE)\n", auxbuenos->legisladores.nombre);
+            scanf("%s", auxbuenos->legisladores.voto);
+            validar_voto = 0;
+            while (validar_voto != 1) // WHILE VOTO
             {
-                printf("Ingrese el voto del legislador %s: (F O D FAVORABLE/DESFAVORABLE)\n", auxbuenos->legisladores.nombre);
-                scanf("%s", auxbuenos->legisladores.voto);
                 if (strcmp(auxbuenos->legisladores.voto, "F") == 0 | strcmp(auxbuenos->legisladores.voto, "D") == 0)
                 {
                     validar_voto = 1;
@@ -287,22 +284,43 @@ void votacion()
                 {
                     printf("Ingrese correctamente el comando");
                     scanf("%s", auxbuenos->legisladores.voto);
-                    strcpy(chicos_Buenos->legisladores.voto, auxbuenos->legisladores.voto);
                 }
             }
-            else
-            {
-                strcpy(chicos_Buenos->legisladores.voto, "Ausente");
-            }
+        }
+        if (strcmp(auxbuenos->legisladores.presencia, "A") == 0)
+        {
+            strcpy(auxbuenos->legisladores.voto, "Ausente");
         }
         auxbuenos = auxbuenos->siguiente;
     }
 }
-
-void insertar()
+void reordenar()
 {
-}
-
-void suprimir()
-{
+    siguebuenos = chicos_Buenos;
+    siguemalos = chicos_Malos;
+    // MALO VOTA FAVORABLE
+    // AGREGAR MALO A LISTA BUENA
+    while (siguemalos != NULL)
+    {
+        if (strcmp(siguemalos->legisladores.voto, "F") == 0)
+        {
+            siguebuenos->siguiente = siguemalos;
+        }
+        else
+        {
+            siguemalos = siguemalos->siguiente;
+        }
+    }
+    // ELIMINAR MALO DE LISTA MALA
+    while (siguemalos != NULL)
+    {
+        if (strcmp(siguemalos->legisladores.voto, "F") == 0)
+        {
+            siguemalos->siguiente = siguemalos;
+        }
+        else
+        {
+            siguemalos = siguemalos->siguiente;
+        }
+    }
 }
