@@ -36,21 +36,21 @@ chicos_malos *nuevos_Malos;
 chicos_buenos *nuevos_Buenos;
 chicos_malos *siguemalos;
 chicos_buenos *siguebuenos;
+chicos_malos *auxmalos;
+chicos_buenos *auxbuenos;
 
 void crearLegisladores(); // CREA LOS LEGISLADORES -ok
 void insertaAntes();      // INSERTA LOS LEGISLADORES EN LOS GRUPOS ANTES DEL VOTO (SEGUN CARGA DEL USUARIO)
 void mostrar();           // MUESTRA LAS LISTAS ENLAZADAS
-void pideVotoYpres();     // PIDE AL USUARIO EL VOTO Y PRESENCIA DE LOS LEGISLADORES
-// inserta();                // INSERTA LOS LEGISLADORES DESPUES DEL VOTO
-// suprime();                // ELIMINA LOS LEGISLADORES DE LOS GRUPOS DESPUES DEL VOTO
-// miembro();                // DEVUELVE BOOLEANO SEGUN PRESENCIA
+void votacion();          // SE HACE LA VOTACION: SE PREGUNTA PRESENCIA Y SU VOTO
 
 int main()
 {
     crearLegisladores();
     insertaAntes();
     mostrar();
-    pideVotoYpres();
+    votacion();
+    mostrar();
 }
 
 void crearLegisladores()
@@ -196,207 +196,104 @@ void mostrar()
         {
             printf("Grupo: chicos_buenos\n");
         }
-
         printf("Voto: %s\n", siguebuenos->legisladores.voto);
         siguebuenos = siguebuenos->siguiente;
     }
 }
-
-void pideVotoYpres()
+void votacion()
 {
-    chicos_malos *siguemalos = malloc(sizeof(chicos_malos));
-    siguemalos = chicos_Malos;
-    int valvoto = 0;
-    int valpresencia = 0;
-
-    /**************INGRESAR VOTO Y PRESENCIA A CADA LEGISLADOR***************/
-    while (siguemalos != NULL)
+    auxmalos = malloc(sizeof(chicos_malos));
+    auxmalos = chicos_Malos;
+    int validar_presencia = 0;
+    int validar_voto = 0;
+    while (auxmalos != NULL)
     {
-        printf("Inserta el VOTO del legislador %s (D O F // DESFAVORABLE O FAVORABLE) \n", siguemalos->legisladores.nombre);
-        scanf("%s", siguemalos->legisladores.voto);
-        while (valvoto != 1) // CHECK DE INFORMACION INTRODUCIDA
+        validar_presencia = 0;
+        printf("Ingrese presencia del legislador %s: (P O A, PRESENTE O AUSENTE)\n", auxmalos->legisladores.nombre);
+        scanf("%s", auxmalos->legisladores.presencia);
+
+        strcpy(chicos_Malos->legisladores.presencia, auxmalos->legisladores.presencia); // PRESENCIAMALOS
+        while (validar_presencia != 1)
         {
-            if (strcmp(siguemalos->legisladores.voto, "D") == 0 || strcmp(siguemalos->legisladores.voto, "F") == 0)
+            if (strcmp(auxmalos->legisladores.presencia, "P") == 0 | strcmp(auxmalos->legisladores.presencia, "A") == 0)
             {
-                valvoto = 1;
+                validar_presencia = 1;
             }
             else
             {
-                printf("Ingrese nuevamente el comando\n");
-                scanf("%s", siguemalos->legisladores.voto);
+                printf("Ingrese correctamente el comando");
+                scanf("%s", auxmalos->legisladores.presencia);
+                strcpy(chicos_Malos->legisladores.presencia, auxmalos->legisladores.presencia);
             }
         }
-    }
-    /*  if (strcmp(chicos_Malos->legisladores.grupo, "M") == 0)
-      {
-          strcpy(chicos_Malos->legisladores.voto, legisladorActual->voto);
-      }
 
-    printf("Inserta el PRESENTISMO del legislador %s (P o A //PRESENTE O AUSENTE) \n", siguemalos->legisladores.nombre);
-    scanf("%s", legisladorActual->presencia);
-
-    while (valpresencia != 1) // CHECK DE INFORMACION INTRODUCIDA
-    {
-        if (strcmp(legisladorActual->presencia, "P") == 0 || strcmp(legisladorActual->presencia, "A") == 0)
+        validar_voto = 0;
+        if (strcmp(chicos_Malos->legisladores.presencia, "P") == 0) // VOTO MALOS
         {
-            valpresencia = 1;
-        }
-        else
-        {
-            (strcmp(legisladorActual->presencia, "P") != 0 || strcmp(legisladorActual->presencia, "A") != 0);
-            printf("Ingrese nuevamente el comando\n");
-            scanf("%s", legisladorActual->presencia);
-        }
-*/
-    /*******************************ASIGNAR Y MOSTRAR DATOS COMPLETOS DE CADA LEGISLADOR**********************************/
-    siguemalos = malloc(sizeof(chicos_malos));
-    siguemalos = chicos_Malos;
-    while (siguemalos != NULL)
-    {
-        printf("Nombre: %s\n", siguemalos->legisladores.nombre);
-        printf("Presente: %s\n", siguemalos->legisladores.presencia);
-        if (strcmp("M", siguemalos->legisladores.grupo) == 0)
-        {
-            printf("Grupo: chicos_malos\n");
-        }
-        printf("Voto: %s\n", siguemalos->legisladores.voto);
-        siguemalos = siguemalos->siguiente;
-    }
-
-    siguebuenos = malloc(sizeof(chicos_buenos));
-    siguebuenos = chicos_Buenos;
-    while (siguebuenos != NULL)
-    {
-        printf("Nombre: %s\n", siguebuenos->legisladores.nombre);
-        printf("Presente: %s\n", siguebuenos->legisladores.presencia);
-        if (strcmp("B", siguebuenos->legisladores.grupo) == 0)
-        {
-            printf("Grupo: chicos_buenos\n");
-        }
-
-        printf("Voto: %s\n", siguebuenos->legisladores.voto);
-        siguebuenos = siguebuenos->siguiente;
-    }
-}
-
-
-/*
-/**************** LEGISLADOR 1**************
-if (strcmp("M", legisladores[0]->grupo) == 0)
-{
-    nuevos_Malos = malloc(sizeof(chicos_malos));
-
-    printf("El legislador %s pertenece al grupo Chicos Malos\n", legisladores[0]->nombre);
-    strcpy(nuevos_Malos->legisladores.nombre, legisladores[0]->nombre);
-    strcpy(nuevos_Malos->legisladores.grupo, legisladores[0]->grupo);
-    nuevos_Malos->siguiente = NULL;
-    chicos_Malos = nuevos_Malos;
-}
-
-/**************** LEGISLADOR 2**************
-if (strcmp("M", legisladores[1]->grupo) == 0)
-{
-    nuevos_Malos = malloc(sizeof(chicos_malos));
-
-    printf("El legislador %s pertenece al grupo Chicos Malos\n", legisladores[1]->nombre);
-    strcpy(nuevos_Malos->legisladores.nombre, legisladores[1]->nombre);
-    strcpy(nuevos_Malos->legisladores.grupo, legisladores[1]->grupo);
-    nuevos_Malos->siguiente = chicos_Malos;
-    chicos_Malos = nuevos_Malos;
-}
-
-/**************** LEGISLADOR 3**************
-if (strcmp("M", legisladores[2]->grupo) == 0)
-{
-    nuevos_Malos = malloc(sizeof(chicos_malos));
-
-    printf("El legislador %s pertenece al grupo Chicos Malos\n", legisladores[2]->nombre);
-    strcpy(nuevos_Malos->legisladores.nombre, legisladores[2]->nombre);
-    strcpy(nuevos_Malos->legisladores.grupo, legisladores[2]->grupo);
-    nuevos_Malos->siguiente = chicos_Malos;
-    chicos_Malos = nuevos_Malos;
-}
-
-/**************** LEGISLADOR 4**************
-if (strcmp("M", legisladores[3]->grupo) == 0)
-{
-    nuevos_Malos = malloc(sizeof(chicos_malos));
-
-    printf("El legislador %s pertenece al grupo Chicos Malos\n", legisladores[3]->nombre);
-    strcpy(nuevos_Malos->legisladores.nombre, legisladores[3]->nombre);
-    strcpy(nuevos_Malos->legisladores.grupo, legisladores[3]->grupo);
-    nuevos_Malos->siguiente = chicos_Malos;
-    chicos_Malos = nuevos_Malos;
-}
-*/
-
-/*VOTACION()
-
-{
-    legis *legisladorActual = malloc(sizeof(legis));
-    for (int i = 0; i < CANT_LEGISLADORES; i++)
-    {
-        // voto
-        printf("Ingrese el voto del legislador %s (F o D -- Favorable/Desfavorable)\n", nombres[i]);
-        scanf("%s", legisladorActual->voto);
-        int valvoto = 0;
-        while (valvoto != 1) // CHECK DE INFORMACION INTRODUCIDA
-        {
-            if (strcmp(legisladorActual->voto, "F") == 0 || strcmp(legisladorActual->voto, "D") == 0)
+            printf("Ingrese el voto del legislador %s: (F O D FAVORABLE/DESFAVORABLE)\n", auxmalos->legisladores.nombre);
+            scanf("%s", auxmalos->legisladores.voto);
+            if (strcmp(auxmalos->legisladores.voto, "F") == 0 | strcmp(auxmalos->legisladores.voto, "D") == 0)
             {
-                valvoto = 1;
+                validar_voto = 1;
             }
             else
             {
-                (strcmp(legisladorActual->voto, "F") != 0 || strcmp(legisladorActual->voto, "D") != 0);
-
-                printf("Ingrese nuevamente el comando\n");
-                scanf("%s", legisladorActual->voto);
+                printf("Ingrese correctamente el comando");
+                scanf("%s", auxmalos->legisladores.voto);
+                strcpy(chicos_Malos->legisladores.voto, auxmalos->legisladores.voto);
             }
         }
-
-        // presencia
-
-        printf("Ingrese presentismo del legislador %s (P o A -- Presente/Ausente)\n", nombres[i]);
-        scanf("%s", legisladorActual->presencia);
-        int valpresencia = 0;
-        while (valpresencia != 1) // CHECK DE INFORMACION INTRODUCIDA
+        If
         {
+            strcpy(chicos_Malos->legisladores.voto, "Ausente");
+        }
+        auxmalos = auxmalos->siguiente;
+    }
 
-            if (strcmp(legisladorActual->presencia, "P") == 0 || strcmp(legisladorActual->presencia, "A") == 0)
+    auxbuenos = malloc(sizeof(chicos_buenos));
+    auxbuenos = chicos_Buenos;
+    validar_presencia = 0;
+    while (auxbuenos != NULL)
+    {
+        validar_presencia = 0;
+        printf("Ingrese presencia del legislador %s: (P O A, PRESENTE O AUSENTE)\n", auxbuenos->legisladores.nombre);
+        scanf("%s", auxbuenos->legisladores.presencia);
+
+        strcpy(chicos_Buenos->legisladores.presencia, auxbuenos->legisladores.presencia);
+        while (validar_presencia != 1)
+        {
+            if (strcmp(auxbuenos->legisladores.presencia, "P") == 0 | strcmp(auxbuenos->legisladores.presencia, "A") == 0) // PRESENCIABUENO
             {
-                valpresencia = 1;
+                validar_presencia = 1;
             }
             else
             {
-                printf("Ingrese nuevamente el comando\n");
-                scanf("%s", legisladorActual->presencia);
+                printf("Ingrese correctamente el comando");
+                scanf("%s", auxbuenos->legisladores.presencia);
+                strcpy(chicos_Buenos->legisladores.presencia, auxbuenos->legisladores.presencia);
+            }
+
+            validar_voto = 0; // VOTOBUENO
+            if (strcmp(chicos_Buenos->legisladores.presencia, "P") == 0)
+            {
+                printf("Ingrese el voto del legislador %s: (F O D FAVORABLE/DESFAVORABLE)\n", auxbuenos->legisladores.nombre);
+                scanf("%s", auxbuenos->legisladores.voto);
+                if (strcmp(auxbuenos->legisladores.voto, "F") == 0 | strcmp(auxbuenos->legisladores.voto, "D") == 0)
+                {
+                    validar_voto = 1;
+                }
+                else
+                {
+                    printf("Ingrese correctamente el comando");
+                    scanf("%s", auxbuenos->legisladores.voto);
+                    strcpy(chicos_Buenos->legisladores.voto, auxbuenos->legisladores.voto);
+                }
+            }
+            else
+            {
+                strcpy(chicos_Buenos->legisladores.voto, "Ausente");
             }
         }
+        auxbuenos = auxbuenos->siguiente;
     }
 }
-
-insertaAntes()
-{
-}
-inserta()
-{
-}
-suprime()
-{
-}
-miembro()
-{
-}
-mostrar()
-{
-} */
-/*
-if (strcmp("B", legisladores[i]->grupo) == 0)
-{
-nuevos_Buenos = malloc(sizeof(chicos_buenos));
-printf("El legislador %s pertenece al grupo Chicos Buenos\n", legisladores[i]->nombre);
-strcpy(nuevos_Buenos->legisladores.nombre, legisladores[i]->nombre);
-nuevos_Buenos->siguiente = NULL; // El primero apunta a NULL
-}
-*/
