@@ -43,7 +43,8 @@ void crearLegisladores(); // CREA LOS LEGISLADORES -ok
 void insertaAntes();      // INSERTA LOS LEGISLADORES EN LOS GRUPOS ANTES DEL VOTO (SEGUN CARGA DEL USUARIO)
 void mostrar();           // MUESTRA LAS LISTAS ENLAZADAS
 void votacion();          // SE HACE LA VOTACION: SE PREGUNTA PRESENCIA Y SU VOTO
-
+void insertar();
+void suprimir();
 int main()
 {
     crearLegisladores();
@@ -243,7 +244,7 @@ void votacion()
                 strcpy(chicos_Malos->legisladores.voto, auxmalos->legisladores.voto);
             }
         }
-        If
+
         {
             strcpy(chicos_Malos->legisladores.voto, "Ausente");
         }
@@ -296,4 +297,12 @@ void votacion()
         }
         auxbuenos = auxbuenos->siguiente;
     }
+}
+
+void insertar()
+{
+}
+
+void suprimir()
+{
 }
