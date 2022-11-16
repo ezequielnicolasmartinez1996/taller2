@@ -1,0 +1,10 @@
+Esteban - Martinez - Masculino - 69 - Completo
+Dario - Garcia - Masculino - 40 - Aficionado
+Mireya - Perez - Femenino - 22 - Completo
+Nubia - Kirchner - Femenino - 17 - Normal
+Gustavo - Macri - Masculino - 28 - Completo
+Julio - Peron - Femenino - 38 - Completo
+Carlos - Alfonsin - Masculino - 74 - Normal
+Helena - Illia - Masculino - 43 - Aficionado
+Sebastian - Irigoyen - Masculino - 58 - Completo
+Nicolai - Manoukian - Femenino - 25 - Aficionado
