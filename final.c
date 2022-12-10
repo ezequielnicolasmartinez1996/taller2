@@ -17,12 +17,19 @@ int main()
                                                {0, 0, 0, 0, 0, 4},
                                                {0, 0, 0, 0, 0, 0}};
 
-    int matrizFlujo[VERTICES][VERTICES] = {{0, 0, 0, 0, 0, 0},
+    int matrizFLujo[VERTICES][VERTICES] = {{0, 0, 0, 0, 0, 0},
                                            {0, 0, 0, 0, 0, 0},
                                            {0, 0, 0, 0, 0, 0},
                                            {0, 0, 0, 0, 0, 0},
                                            {0, 0, 0, 0, 0, 0},
                                            {0, 0, 0, 0, 0, 0}};
+
+    int matrizAuxiliarFLujo[VERTICES][VERTICES] = {{0, 0, 0, 0, 0, 0},
+                                                   {0, 0, 0, 0, 0, 0},
+                                                   {0, 0, 0, 0, 0, 0},
+                                                   {0, 0, 0, 0, 0, 0},
+                                                   {0, 0, 0, 0, 0, 0},
+                                                   {0, 0, 0, 0, 0, 0}};
 
     int matrizResultante[VERTICES][VERTICES]; // Matriz de capacidad - matriz de flujo
 
@@ -52,31 +59,86 @@ int main()
         }
 
         if (numeroMaximo > 0)
+        {
+            aristaFlujoMinimo = numeroMaximo;
             printf("Arista (%d,%d) Capacidad: %d\n", k + 1, bandera1 + 1, numeroMaximo);
 
-        // OBTENER EL NUMERO MINIMO DEL CAMINO
-        
-        /******IMPACTARLO EN MATRIZ DE FLUJO*****/
-        matrizFlujo[k][bandera1] = numeroMaximo;
+            // OBTENER EL NUMERO MINIMO DEL CAMINO
+            if (numeroMaximo <= aristaFlujoMinimo)
+            {
+                aristaFlujoMinimo = numeroMaximo;
+            }
+        }
+        // IMPACTAR EN MATRIZ AUX DE FLUJO
+        matrizAuxiliarFLujo[k][bandera1] = numeroMaximo;
+
+        // RESETEAR VARIABLE
         numeroMaximo = 0;
     }
 
-    // IMPRESION MATRIZ DE FLUJO
+    /******CAMBIAR MATRIZ AUX DE FLUJO POR FLUJOS MINIMOS*****/
     for (int k = 0; k < VERTICES; k++)
     {
         for (int i = 0; i < VERTICES; i++)
         {
-            printf("%d ", matrizFlujo[k][i]);
+            if (matrizAuxiliarFLujo[k][i] > aristaFlujoMinimo)
+            {
+                matrizAuxiliarFLujo[k][i] = aristaFlujoMinimo;
+            }
+        }
+    }
+
+    /*********GENERAR MATRIZ RESULTANTE (RESIDUAL)********/
+    for (int k = 0; k < VERTICES; k++)
+    {
+        for (int i = 0; i < VERTICES; i++)
+        {
+            matrizResultante[k][i] = matrizCapacidad[k][i] - matrizAuxiliarFLujo[k][i];
+        }
+    }
+
+    printf("Arista de flujo minimo: %d\n", aristaFlujoMinimo);
+
+    // IMPRESION MATRIZ DE CAPACIDAD
+    printf("Matriz capacidad\n");
+    for (int k = 0; k < VERTICES; k++)
+    {
+        for (int i = 0; i < VERTICES; i++)
+        {
+            printf("%d ", matrizCapacidad[k][i]);
         }
         printf("\n");
     }
+
+    // IMPRESION MATRIZ AUX DE FLUJO
+    printf("Matriz aux de flujo\n");
+    for (int k = 0; k < VERTICES; k++)
+    {
+        for (int i = 0; i < VERTICES; i++)
+        {
+            printf("%d ", matrizAuxiliarFLujo[k][i]);
+        }
+        printf("\n");
+    }
+
+    // IMPRESION MATRIZ DE RESULTANTE
+    printf("Matriz resultante\n");
+    for (int k = 0; k < VERTICES; k++)
+    {
+        for (int i = 0; i < VERTICES; i++)
+        {
+            printf("%d ", matrizResultante[k][i]);
+        }
+        printf("\n");
+    }
+
     /*********CHEQUEADOR DE MATRICES********/
     for (int k = 0; k < VERTICES; k++)
     {
         for (int i = 0; i < VERTICES; i++)
         {
             //  printf("La capacidad de la arista (%d,%d) es: %d\n", k, i, matrizCapacidad[k][i]);
-            //  printf("El flujo actual de la arista (%d,%d) es: %d\n", k, i, matrizFlujo[k][i]);
+            //  printf("El flujo AUX actual de la arista (%d,%d) es: %d\n", k, i, matrizAuxiliarFLujo[k][i]);
             //   if(matrizVisita[k][i]==0)printf("El vertice no fue visitado\n");
             //   if(matrizVisita[k][i]==1)printf("El vertice fue visitado\n");
         }
