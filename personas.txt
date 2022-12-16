@@ -1,20 +1,20 @@
-Esteban - Martinez - Femenino - 51 - Aficionado
-Dario - Garcia - Femenino - 36 - Aficionado
-Mireya - Perez - Masculino - 14 - Aficionado
-Nubia - Kirchner - Masculino - 9 - Normal
-Gustavo - Macri - Masculino - 21 - Aficionado
-Julio - Peron - Femenino - 44 - Completo
-Carlos - Alfonsin - Femenino - 63 - Normal
-Helena - Illia - Masculino - 61 - Completo
-Sebastian - Irigoyen - Masculino - 19 - Normal
-Nicolai - Manoukian - Masculino - 30 - Aficionado
-Esteban - Martinez - Femenino - 51 - Aficionado - 95
-Dario - Garcia - Femenino - 36 - Aficionado - 95
-Mireya - Perez - Masculino - 14 - Aficionado - 95
-Nubia - Kirchner - Masculino - 9 - Normal - 143
-Gustavo - Macri - Masculino - 21 - Aficionado - 100
-Julio - Peron - Femenino - 44 - Completo - 200
-Carlos - Alfonsin - Femenino - 63 - Normal - 150
-Helena - Illia - Masculino - 61 - Completo - 190
-Sebastian - Irigoyen - Masculino - 19 - Normal - 150
-Nicolai - Manoukian - Masculino - 30 - Aficionado - 100
+Esteban - Martinez - Masculino - 37 - Aficionado
+Dario - Garcia - Femenino - 39 - Aficionado
+Mireya - Perez - Femenino - 66 - Normal
+Nubia - Kirchner - Masculino - 13 - Completo
+Gustavo - Macri - Femenino - 58 - Completo
+Julio - Peron - Masculino - 50 - Aficionado
+Carlos - Alfonsin - Masculino - 35 - Completo
+Helena - Illia - Femenino - 46 - Aficionado
+Sebastian - Irigoyen - Femenino - 31 - Normal
+Nicolai - Manoukian - Femenino - 19 - Aficionado
+Esteban - Martinez - Masculino - 37 - Aficionado - 95
+Dario - Garcia - Femenino - 39 - Aficionado - 95
+Mireya - Perez - Femenino - 66 - Normal - 136
+Nubia - Kirchner - Masculino - 13 - Completo - 200
+Gustavo - Macri - Femenino - 58 - Completo - 200
+Julio - Peron - Masculino - 50 - Aficionado - 100
+Carlos - Alfonsin - Masculino - 35 - Completo - 190
+Helena - Illia - Femenino - 46 - Aficionado - 95
+Sebastian - Irigoyen - Femenino - 31 - Normal - 150
+Nicolai - Manoukian - Femenino - 19 - Aficionado - 95
