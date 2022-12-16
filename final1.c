@@ -14,10 +14,9 @@ void muestraSemicamino(int g[][1]);
 void actualizaAuxiliar(int g[][VERTICES], int h[][1]);
 
 int camino[VERTICES];
-int n, m, k, i, distanciaCamino = 0;
+int n, k, i, distanciaCamino = 0;
 int semiCamino[][1];
 int aristaMaxima;
-int algoritmoTermina = 0;
 // matriz [vertice de arista que sale][vertice de arista que entra]
 int matrizCapacidad[VERTICES][VERTICES] = {{0, 4, 6, 0, 0, 0},
                                            {0, 0, 0, 3, 5, 0},
@@ -27,17 +26,7 @@ int matrizCapacidad[VERTICES][VERTICES] = {{0, 4, 6, 0, 0, 0},
                                            {0, 0, 0, 0, 0, 0}};
 int matrizAuxiliar[VERTICES][VERTICES];
 void borrarCamino();
-
-int matrizFlujo[VERTICES][VERTICES] = {{0, 0, 0, 0, 0, 0},
-                                       {0, 0, 0, 0, 0, 0},
-                                       {0, 0, 0, 0, 0, 0},
-                                       {0, 0, 0, 0, 0, 0},
-                                       {0, 0, 0, 0, 0, 0},
-                                       {0, 0, 0, 0, 0, 0}};
-
-int matrizResultante[VERTICES][VERTICES]; // Matriz de capacidad - matriz de flujo
 int caminoVisita[VERTICES];
-int matrizInicializada[VERTICES][VERTICES];
 int aristaPesoMinimo;
 
 int main()
@@ -58,14 +47,13 @@ int main()
     muestraSemicamino(semiCamino);
     actualizaAuxiliar(matrizAuxiliar, semiCamino);
     borrarCamino();
-    
+
     printf("Parte 3:\n"); // tercer recorrido
     mostrarMatriz(matrizAuxiliar);
     calculaSemicamino(matrizAuxiliar);
     muestraSemicamino(semiCamino);
     actualizaAuxiliar(matrizAuxiliar, semiCamino);
     borrarCamino();
-
 }
 
 void mostrarMatriz(int g[][VERTICES])
@@ -168,7 +156,6 @@ void muestraSemicamino(int g[][1])
                 for (int j = 0; j < VERTICES; j++)
                 {
                     flujoMaximo = matrizAuxiliar[5][j] + flujoMaximo;
-                    algoritmoTermina = flujoMaximo;
                 }
             }
         }
